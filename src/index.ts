@@ -13,7 +13,7 @@ dotenv.config();
 const app = express();
 
 const corsOptions = {
-  origin: 'https://melodious-zabaione-9a1728.netlify.app',
+  origin: 'https://realtime-chat-application-snowy-xi.vercel.app',
   methods: ['GET', 'POST'],
   credentials: true,
   optionsSuccessStatus: 204,
