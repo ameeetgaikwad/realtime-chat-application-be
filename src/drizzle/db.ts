@@ -5,7 +5,7 @@ dotenv.config();
 import postgres from "postgres";
 
 const client = postgres(
-    process.env.DATABASE_URL as string,
+    "postgresql://neondb_owner:7ergEI8UslYO@ep-blue-wind-a5tyq4ze.us-east-2.aws.neon.tech/neondb?sslmode=require",
   { max: 1 }
 );
 export const db = drizzle(client, { schema, logger: false });

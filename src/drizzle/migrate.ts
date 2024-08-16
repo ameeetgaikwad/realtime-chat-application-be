@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 // for migrations
 const migrationClient = postgres(
-    process.env.DATABASE_URL as string,
+    "postgresql://neondb_owner:7ergEI8UslYO@ep-blue-wind-a5tyq4ze.us-east-2.aws.neon.tech/neondb?sslmode=require",
   { max: 1 }
 );
 
