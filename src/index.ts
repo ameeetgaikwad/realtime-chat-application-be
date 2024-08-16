@@ -12,9 +12,7 @@ const app = express();
 // Add cross origin
 app.use(cors());
 const server = createServer(app);
-const io = new Server(server, {
-  cors: { origin: process.env.CLIENT_URL || "http://localhost:5173" },
-});
+const io = new Server(server);
 
 // File upload setup
 // const storage = multer.diskStorage({
