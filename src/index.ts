@@ -4,17 +4,28 @@ import { Server } from "socket.io";
 // import multer from 'multer';
 // import path from "path";
 import dotenv from "dotenv";
+import cors from "cors";
+
 import { setupSocketHandlers } from "./socketHandlers";
 
 dotenv.config();
 
 const app = express();
+
+const corsOptions = {
+  origin: 'https://realtime-chat-application-snowy-xi.vercel.app',
+  methods: ['GET', 'POST'],
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+app.use(cors(corsOptions));
+
 const server = createServer(app);
 const io = new Server(server, {
-  cors: {
-    origin: "https://realtime-chat-application-be-production.up.railway.app/",
-  },
+  cors: corsOptions
 });
+
+
 
 // File upload setup
 // const storage = multer.diskStorage({
