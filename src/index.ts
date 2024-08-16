@@ -5,14 +5,16 @@ import { Server } from "socket.io";
 // import path from "path";
 import dotenv from "dotenv";
 import { setupSocketHandlers } from "./socketHandlers";
-import cors from "cors";
+
 dotenv.config();
 
 const app = express();
-// Add cross origin
-app.use(cors());
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "https://realtime-chat-application-be-production.up.railway.app/",
+  },
+});
 
 // File upload setup
 // const storage = multer.diskStorage({
