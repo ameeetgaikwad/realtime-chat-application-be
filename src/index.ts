@@ -36,6 +36,10 @@ const io = new Server(server, {
 // Set up socket handlers
 setupSocketHandlers(io);
 
+app.get("/", (req, res) => {
+  res.send("Server is live");
+});
+
 const port = process.env.PORT || 8000;
 
 server.listen(port, () => {
