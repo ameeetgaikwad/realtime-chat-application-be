@@ -65,8 +65,8 @@ export const setupSocketHandlers = (io: Server) => {
           .where(eq(messages.conversationId, conversationId))
           .orderBy(desc(messages.createdAt))
           .limit(20);
-console.log("recentMessages", recentMessages);
-        socket.emit("conversationReady",  conversationId, recentMessages );
+        console.log("recentMessages", recentMessages);
+        socket.emit("conversationReady", conversationId, recentMessages);
       } catch (error) {
         console.error("Error getting conversation:", error);
       }
@@ -172,37 +172,16 @@ console.log("recentMessages", recentMessages);
       }
     );
 
-    socket.on("typing", async (conversationId: number, isTyping: boolean) => {
-      try {
-        const userId = socket.data.userId;
-        await db
-          .insert(typing)
-          .values({ userId, conversationId, isTyping })
-          .onConflictDoUpdate({
-            target: [typing.userId, typing.conversationId],
-            set: { isTyping, updatedAt: new Date() },
-          });
-
-        const conversation = await db
-          .select()
-          .from(conversations)
-          .where(eq(conversations.id, conversationId));
-
-        if (conversation.length > 0) {
-          const recipientId =
-            conversation[0].user1Id === userId
-              ? conversation[0].user2Id
-              : conversation[0].user1Id;
-          io.to(recipientId.toString()).emit("userTyping", {
-            userId,
-            conversationId,
-            isTyping,
-          });
+    socket.on(
+      "typing",
+      async (isTyping: boolean, conversationId: number, userId: number) => {
+        try {
+          io.emit("userTyping", isTyping, conversationId, userId);
+        } catch (error) {
+          console.error("Error handling typing event:", error);
         }
-      } catch (error) {
-        console.error("Error updating typing status:", error);
       }
-    });
+    );
 
     // socket.on("readMessages", async (conversationId: number, messageIds: number[]) => {
     //   try {
