@@ -51,7 +51,7 @@ export const setupSocketHandlers = (io: Server) => {
             .select()
             .from(users)
             .where(ne(users.id, user.id));
-          socket.emit("userList", allUsers);
+          io.emit("userList", allUsers);
         } catch (error) {
           console.error("Error joining:", error);
         }
