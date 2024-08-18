@@ -47,10 +47,8 @@ export const setupSocketHandlers = (io: Server) => {
           socket.emit("conversationList", userConversations);
           console.log("fetching users");
           // Fetch all users except the current user
-          const allUsers = await db
-            .select()
-            .from(users)
-            .where(ne(users.id, user.id));
+          const allUsers = await db.select().from(users);
+
           io.emit("userList", allUsers);
         } catch (error) {
           console.error("Error joining:", error);
