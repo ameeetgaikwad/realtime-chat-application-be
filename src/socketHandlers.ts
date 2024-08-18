@@ -40,7 +40,7 @@ export const setupSocketHandlers = (io: Server) => {
           io.emit("userOnline", true, user.id);
 
           USER_ID = user.id;
-
+          console.log("user id", user.id);
           socket.emit("joined", user);
 
           const userConversations = await getUserConversations(user.id);
@@ -208,6 +208,27 @@ export const setupSocketHandlers = (io: Server) => {
           }
         } catch (error) {
           console.error("Error sending message:", error);
+        }
+      }
+    );
+
+    socket.on(
+      "loadMoreMessages",
+      async (conversationId: number, limit: number) => {
+        try {
+          const moreMessages = await db
+            .select()
+            .from(messages)
+            .where(eq(messages.conversationId, conversationId))
+            .orderBy(desc(messages.createdAt))
+            .limit(limit);
+          console.log("more messages", moreMessages);
+          socket.emit("moreMessages", {
+            conversationId,
+            messages: moreMessages,
+          });
+        } catch (error) {
+          console.error("Error loading more messages:", error);
         }
       }
     );
