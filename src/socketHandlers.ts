@@ -163,12 +163,12 @@ export const setupSocketHandlers = (io: Server) => {
               senderId,
               conversationId,
               content,
+              isRead: false,
               mediaUrl,
               mediaType,
-              isRead: false,
             })
             .returning();
-
+          socket.emit("messageSent", message[0]);
           await db
             .update(conversations)
             .set({ lastMessageAt: new Date() })
@@ -186,8 +186,6 @@ export const setupSocketHandlers = (io: Server) => {
                 : conversation[0].user1Id;
             console.log(recipientId.toString(), "messange sent to this");
             io.emit(recipientId.toString(), message[0]);
-
-            socket.emit("messageSent", message[0]);
 
             // Emit an event for unread message count
             // const unreadCount = await getUnreadMessageCount(
